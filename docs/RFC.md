@@ -99,3 +99,5 @@ As decisões arquiteturais detalhadas que sustentam esta proposta estão formalm
 * [ADR-004: Autenticação HMAC-SHA256 com Secret Única por Endpoint e Suporte a Rotação](file:///Users/macbookpro/github/fullcycle-mba-ia-desafio-design-docs-com-ia/docs/adrs/ADR-004-autenticacao-hmac-sha256-com-secret-por-endpoint.md)
 * [ADR-005: Garantia de Entrega At-Least-Once com Header X-Event-Id para Idempotência](file:///Users/macbookpro/github/fullcycle-mba-ia-desafio-design-docs-com-ia/docs/adrs/ADR-005-garantia-at-least-once-com-x-event-id.md)
 * [ADR-006: Reuso dos Padrões Arquiteturais e Estruturais Existentes do Projeto](file:///Users/macbookpro/github/fullcycle-mba-ia-desafio-design-docs-com-ia/docs/adrs/ADR-006-reuso-dos-padroes-existentes-do-projeto.md)
+* [ADR-007: Limite Máximo de Tamanho de Payload em 64KB](file:///Users/macbookpro/github/fullcycle-mba-ia-desafio-design-docs-com-ia/docs/adrs/ADR-007-limite-maximo-de-payload-em-64kb.md)
+* [ADR-008: Obrigatoriedade de URLs HTTPS via Validação Zod](file:///Users/macbookpro/github/fullcycle-mba-ia-desafio-design-docs-com-ia/docs/adrs/ADR-008-obrigatoriedade-de-https-via-zod.md)

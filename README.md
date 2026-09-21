@@ -25,7 +25,7 @@ O trabalho foi organizado em uma esteira de produção **incremental e iterativa
 
 ```mermaid
 graph TD
-    Step1[Fase 1: ADRs 001 a 006] -->|Validação & Commit| Step2[Fase 2: RFC]
+    Step1[Fase 1: ADRs 001 a 008] -->|Validação & Commit| Step2[Fase 2: RFC]
     Step2 -->|Validação & Commit| Step3[Fase 3: FDD]
     Step3 -->|Validação & Commit| Step4[Fase 4: PRD]
     Step4 -->|Validação & Commit| Step5[Fase 5: TRACKER]
@@ -33,11 +33,11 @@ graph TD
 ```
 
 1. **Exploração e Contextualização:** Leitura e indexação da transcrição (`TRANSCRICAO.md`) e inspeção dos arquivos-chave da codebase (`src/modules/orders/order.service.ts`, `prisma/schema.prisma`, `src/shared/errors/app-error.ts`, `src/middlewares/auth.middleware.ts`).
-2. **ADRs Primeiro:** Produção de 6 Architecture Decision Records (ADRs) estabelecendo as fundações técnicas (Outbox, Polling Worker, Retry/DLQ, HMAC-SHA256, At-Least-Once e Reuso de Padrões).
+2. **ADRs Primeiro:** Produção de 8 Architecture Decision Records (ADRs) estabelecendo as fundações técnicas (Outbox, Polling Worker, Retry/DLQ, HMAC-SHA256, At-Least-Once, Reuso de Padrões, Limite 64KB e Obrigatoriedade HTTPS via Zod).
 3. **RFC da Feature:** Consolidação da proposta técnica geral, documentando trade-offs de 2 alternativas descartadas na reunião e 2 questões em aberto, vinculando aos ADRs.
 4. **FDD da Feature:** Detalhamento profundo de implementação, incluindo diagramas de sequência, especificação de 6 endpoints HTTP, matriz de erros `WEBHOOK_*` e a seção de integração com 5 arquivos reais do sistema.
 5. **PRD da Feature:** Especificação de alto nível para produto/negócio, formalizando o problema, métricas quantitativas de sucesso, 10 requisitos funcionais e itens fora de escopo.
-6. **Matriz de Rastreabilidade (TRACKER):** Mapeamento transversal de 41 itens vinculando os docs aos timestamps `[hh:mm] Nome` da transcrição e caminhos da codebase.
+6. **Matriz de Rastreabilidade (TRACKER):** Mapeamento transversal de 43 itens vinculando os docs aos timestamps `[hh:mm] Nome` da transcrição e caminhos da codebase.
 7. **README do Processo:** Consolidação da jornada no `README.md`.
 
 ---
@@ -95,7 +95,7 @@ Durante a produção com IA, foram necessários ciclos de revisão crítica e re
 
 Todos os artefatos foram entregues no formato Markdown dentro do diretório `docs/`. Recomendamos a seguinte ordem de leitura para melhor compreensão do projeto:
 
-1. **[ADRs (Architecture Decision Records)](file:///Users/macbookpro/github/fullcycle-mba-ia-desafio-design-docs-com-ia/docs/adrs/)**: Leia os 6 registros de decisão técnica em `docs/adrs/` para entender as fundações arquiteturais.
+1. **[ADRs (Architecture Decision Records)](file:///Users/macbookpro/github/fullcycle-mba-ia-desafio-design-docs-com-ia/docs/adrs/)**: Leia os 8 registros de decisão técnica em `docs/adrs/` para entender as fundações arquiteturais.
 2. **[RFC (Request for Comments)](file:///Users/macbookpro/github/fullcycle-mba-ia-desafio-design-docs-com-ia/docs/RFC.md)**: Analise a proposta técnica consolidada, trade-offs de alternativas descartadas e questões em aberto.
 3. **[FDD (Feature Design Document)](file:///Users/macbookpro/github/fullcycle-mba-ia-desafio-design-docs-com-ia/docs/FDD.md)**: Explore as especificações detalhadas de implementação, diagramas de sequência, contratos HTTP e integração com a codebase.
 4. **[PRD (Product Requirement Document)](file:///Users/macbookpro/github/fullcycle-mba-ia-desafio-design-docs-com-ia/docs/PRD.md)**: Veja a visão de produto, requisitos funcionais/não funcionais, escopo e métricas quantitativas de sucesso.

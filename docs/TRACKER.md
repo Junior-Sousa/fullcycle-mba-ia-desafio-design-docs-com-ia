@@ -43,6 +43,8 @@ Este documento estabelece a rastreabilidade cruzada entre cada item registrado n
 | **ADR-004** | `docs/adrs/ADR-004-autenticacao-hmac-sha256-com-secret-por-endpoint.md` | Decisão | HMAC-SHA256, secret por endpoint e grace period de 24h | TRANSCRICAO | `[09:22] Sofia` |
 | **ADR-005** | `docs/adrs/ADR-005-garantia-at-least-once-com-x-event-id.md` | Decisão | Entrega at-least-once com X-Event-Id para idempotência | TRANSCRICAO | `[09:26] Larissa` |
 | **ADR-006** | `docs/adrs/ADR-006-reuso-dos-padroes-existentes-do-projeto.md` | Decisão | Reuso de AppError, Pino, Zod e estrutura modular | TRANSCRICAO | `[09:30] Larissa` |
+| **ADR-007** | `docs/adrs/ADR-007-limite-maximo-de-payload-em-64kb.md` | Decisão | Limite de tamanho de payload em 64KB com erro WEBHOOK_PAYLOAD_TOO_LARGE | TRANSCRICAO | `[09:24] Diego` |
+| **ADR-008** | `docs/adrs/ADR-008-obrigatoriedade-de-https-via-zod.md` | Decisão | Obrigatoriedade de URLs HTTPS validada na camada Zod | TRANSCRICAO | `[09:23] Sofia` |
 | **COD-INT-01** | `docs/FDD.md` | Integração com Código | Extensão do método `changeStatus` em `OrderService` | CODIGO | `src/modules/orders/order.service.ts` |
 | **COD-INT-02** | `docs/FDD.md` | Integração com Código | Adição dos novos modelos de webhook no arquivo de modelo Prisma | CODIGO | `prisma/schema.prisma` |
 | **COD-INT-03** | `docs/FDD.md` | Integração com Código | Reuso das classes base e tratamento de erros do sistema | CODIGO | `src/shared/errors/app-error.ts` |
@@ -54,7 +56,7 @@ Este documento estabelece a rastreabilidade cruzada entre cada item registrado n
 
 ## Estatísticas de Cobertura da Rastreabilidade
 
-* **Total de Itens Mapeados:** 41 itens
-* **Itens com Fonte = TRANSCRICAO:** 35 itens (**85,4%** — Requisito do desafio: >= 70%)
-* **Itens com Fonte = CODIGO:** 6 itens (**14,6%** — Requisito do desafio: >= 5 linhas)
+* **Total de Itens Mapeados:** 43 itens
+* **Itens com Fonte = TRANSCRICAO:** 37 itens (**86,0%** — Requisito do desafio: >= 70%)
+* **Itens com Fonte = CODIGO:** 6 itens (**14,0%** — Requisito do desafio: >= 5 linhas)
 * **Percentual de Itens Rastreáveis nos Docs:** **100%** (**100%** dos itens declarados possuem origem rastreável — Requisito do desafio: >= 80%)
