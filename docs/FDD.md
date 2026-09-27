@@ -295,13 +295,41 @@ Todos os erros lançados pelo módulo de webhooks utilizarão a classe `AppError
 
 ## 8. Observabilidade
 
-* **Logs Estruturados (Pino):**
-  * Toda tentativa de disparo pelo worker será registrada com o logger Pino ([`src/shared/logger/index.ts`](file:///Users/macbookpro/github/fullcycle-mba-ia-desafio-design-docs-com-ia/src/shared/logger/index.ts)), contendo os campos: `eventId`, `webhookConfigId`, `customerId`, `orderId`, `attempt`, `statusCode`, `executionTimeMs`.
-* **Métricas de Performance e Saúde:**
-  * Quantidade de eventos em estado `PENDING` na outbox (tamanho da fila).
-  * Taxa de sucesso vs. falha de entregas por cliente.
-  * Latência média de resposta dos endpoints clientes.
-  * Quantidade de eventos direcionados para a `webhook_dead_letter`.
+A observabilidade do módulo de webhooks baseia-se nos três pilares fundamentais de engenharia de software: **Logs Estruturados**, **Métricas de Performance** e **Tracing Distribuído / Rastreabilidade Ponta a Ponta**.
+
+### 8.1. Logs Estruturados (Pino)
+* Toda ação da API e toda tentativa de disparo pelo worker será registrada utilizando o logger Pino singleton ([`src/shared/logger/index.ts`](file:///Users/macbookpro/github/fullcycle-mba-ia-desafio-design-docs-com-ia/src/shared/logger/index.ts)).
+* Os logs serão emitidos no formato JSON estruturado contendo os campos contextuais obrigatórios: `eventId`, `webhookConfigId`, `customerId`, `orderId`, `attempt`, `statusCode`, `executionTimeMs`, `status` e `component` (`api` ou `worker`).
+
+### 8.2. Métricas de Performance e Saúde
+* **Tamanho da Fila Outbox:** Quantidade de eventos com `status = 'PENDING'` na tabela `webhook_outbox` (indicador de saúde e *backlog* do worker).
+* **Latência de Entrega (End-to-End Latency):** Tempo decorrido entre a gravação do evento na outbox (`createdAt`) e a confirmação do despacho HTTP com sucesso (`deliveredAt`).
+* **Taxa de Sucesso vs. Falha:** Percentual de requisições respondidas com HTTP 2xx vs. 4xx/5xx/timeouts agrupadas por cliente.
+* **Volume de DLQ:** Quantidade de eventos descartados permanentemente e movidos para a `webhook_dead_letter`.
+
+### 8.3. Tracing Distribuído e Rastreabilidade Ponta a Ponta (End-to-End Tracing)
+O rastreamento completo do ciclo de vida de uma notificação é garantido através da **correlação de contexto utilizando o `eventId` (UUID v4)** do momento da criação até o recebimento no cliente:
+
+1. **Criação e Ingestão (API HTTP OMS):**
+   * No momento em que `OrderService.changeStatus` executa a transação, a função `publishWebhookEvent` gera um `eventId` único (UUID v4) e o persiste na `webhook_outbox`.
+   * A API emite um log estruturado contendo `{ eventId, orderId, customerId, action: 'webhook_outbox_created' }`.
+2. **Propagação de Contexto pelo Worker (`src/worker.ts`):**
+   * O worker faz o polling dos eventos em estado `PENDING`, extrai o `eventId` de cada registro e injeta este identificador como contexto filho no logger Pino.
+   * Todos os logs de processamento, retentativas e tratamento de erros no worker herdarão o mesmo `eventId`.
+3. **Despacho HTTP e Propagação para o Cliente:**
+   * O worker transmite o `eventId` no cabeçalho HTTP **`X-Event-Id`** para o receptor do cliente B2B, estendendo o rastreamento para além das fronteiras da nossa infraestrutura e permitindo auditoria/desduplicação no cliente.
+4. **Persistência de Histórico (Auditoria & DLQ):**
+   * Em cada tentativa de envio, a tabela `webhook_deliveries` grava um registro amarrado ao `eventId`.
+   * Caso o evento esgoste as 5 tentativas e seja movido para a `webhook_dead_letter`, o `eventId` é preservado, permitindo que a rota de replay (`POST /admin/webhooks/dead-letter/:id/replay`) mantenha a rastreabilidade histórica completa.
+
+Com essa estratégia, qualquer engenheiro ou operador pode pesquisar um único `eventId` no sistema de centralização de logs (ex: Datadog, CloudWatch ou Kibana) ou no banco de dados e reconstituir toda a linha do tempo (*timeline*) do evento:
+
+```text
+[API] OrderService.changeStatus -> Outbox Created (eventId: 9b1deb4d...)
+   └─► [Worker] Polling PickUp -> Attempt 1 (HTTP 503 Service Unavailable)
+        └─► [Worker] Backoff Schedule -> Retry Scheduled (+1m)
+             └─► [Worker] Attempt 2 (HTTP 200 OK) -> WebhookDelivery Success
+```
 
 ---
 

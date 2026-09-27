@@ -37,6 +37,7 @@ Este documento estabelece a rastreabilidade cruzada entre cada item registrado n
 | **FDD-CONTRATO-01** | `docs/FDD.md` | Contrato HTTP | Headers enviados: X-Event-Id, X-Signature, X-Timestamp, X-Webhook-Id | TRANSCRICAO | `[09:44] Diego` |
 | **FDD-ERRO-01** | `docs/FDD.md` | Padronização de Erro | Códigos de erro padronizados com prefixo WEBHOOK_* | TRANSCRICAO | `[09:29] Bruno` |
 | **FDD-SEC-01** | `docs/FDD.md` | Segurança | Exigência da role ADMIN no endpoint de replay de DLQ | TRANSCRICAO | `[09:36] Sofia` |
+| **FDD-OBS-01** | `docs/FDD.md` | Observabilidade | Observabilidade em 3 pilares: Logs (Pino), Métricas e Tracing correlacionando eventId | TRANSCRICAO | `[09:29] Bruno` |
 | **ADR-001** | `docs/adrs/ADR-001-outbox-no-mysql.md` | Decisão | Uso do Padrão Outbox no MySQL em transação atômica | TRANSCRICAO | `[09:08] Larissa` |
 | **ADR-002** | `docs/adrs/ADR-002-worker-em-processo-separado-em-polling.md` | Decisão | Polling de 2s e worker em processo isolado | TRANSCRICAO | `[09:10] Larissa` |
 | **ADR-003** | `docs/adrs/ADR-003-politica-de-retry-com-backoff-e-dlq.md` | Decisão | 5 tentativas de retry, backoff exponencial e tabela DLQ | TRANSCRICAO | `[09:17] Larissa` |
@@ -56,7 +57,7 @@ Este documento estabelece a rastreabilidade cruzada entre cada item registrado n
 
 ## Estatísticas de Cobertura da Rastreabilidade
 
-* **Total de Itens Mapeados:** 43 itens
-* **Itens com Fonte = TRANSCRICAO:** 37 itens (**86,0%** — Requisito do desafio: >= 70%)
-* **Itens com Fonte = CODIGO:** 6 itens (**14,0%** — Requisito do desafio: >= 5 linhas)
+* **Total de Itens Mapeados:** 44 itens
+* **Itens com Fonte = TRANSCRICAO:** 38 itens (**86,4%** — Requisito do desafio: >= 70%)
+* **Itens com Fonte = CODIGO:** 6 itens (**13,6%** — Requisito do desafio: >= 5 linhas)
 * **Percentual de Itens Rastreáveis nos Docs:** **100%** (**100%** dos itens declarados possuem origem rastreável — Requisito do desafio: >= 80%)
